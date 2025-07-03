@@ -62,22 +62,23 @@ export default function OrdersPage() {
     currentPage * itemsPerPage
   );
 
+ // ...existing code...
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Orders</h1>
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Orders</h1>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => router.push('/orders/add')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
           >
             ➕ Add Order
           </button>
           <input
             type="text"
             placeholder="Search by customer or status..."
-            className="border p-2 rounded w-64"
+            className="border p-2 rounded w-full sm:w-64"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -92,15 +93,15 @@ export default function OrdersPage() {
       ) : (
         <>
           <div className="overflow-x-auto bg-white shadow rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-[600px] w-full divide-y divide-gray-200 text-sm sm:text-base">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium">Order ID</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium">Customer</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium">Amount (₹)</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium">Date</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium">Status</th>
-                  <th className="px-4 py-3 text-center text-sm font-medium">Actions</th>
+                  <th className="px-4 py-3 text-left font-medium">Order ID</th>
+                  <th className="px-4 py-3 text-left font-medium">Customer</th>
+                  <th className="px-4 py-3 text-left font-medium">Amount (₹)</th>
+                  <th className="px-4 py-3 text-left font-medium">Date</th>
+                  <th className="px-4 py-3 text-left font-medium">Status</th>
+                  <th className="px-4 py-3 text-center font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">
@@ -133,11 +134,11 @@ export default function OrdersPage() {
             </table>
           </div>
 
-          <div className="flex justify-center items-center mt-4 gap-6">
+          <div className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-2 sm:gap-6">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+              className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
             >
               ⬅️ Prev
             </button>
@@ -149,7 +150,7 @@ export default function OrdersPage() {
             <button
               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+              className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
             >
               Next ➡️
             </button>
@@ -158,4 +159,5 @@ export default function OrdersPage() {
       )}
     </div>
   );
+// ...existing code...
 }

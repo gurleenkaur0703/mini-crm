@@ -47,8 +47,8 @@ export default function EditOrderPage({ params }) {
   if (!form) return <p className="p-4">Loading...</p>;
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow rounded">
-      <h2 className="text-xl font-semibold mb-4">Edit Order</h2>
+    <div className="max-w-lg sm:max-w-2xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white shadow rounded">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4">Edit Order</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Customer</label>
@@ -101,11 +101,12 @@ export default function EditOrderPage({ params }) {
 
         <button
           type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
         >
           Save Changes
         </button>
       </form>
     </div>
   );
+
 }

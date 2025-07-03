@@ -63,14 +63,15 @@ export default function CampaignsPage() {
     }
   };
 
+  // ...existing code...
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold"> Campaigns</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold">Campaigns</h1>
         <button
           onClick={() => router.push('/campaigns/create')}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
         >
           ➕ New Campaign
         </button>
@@ -80,14 +81,14 @@ export default function CampaignsPage() {
         <p>Loading campaigns...</p>
       ) : (
         <div className="overflow-x-auto bg-white shadow rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm sm:text-base">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-medium">Name</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Segment</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Status</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Sent At</th>
-                <th className="px-4 py-3 text-sm font-medium text-center">Actions</th>
+                <th className="px-4 py-3 text-left font-medium">Name</th>
+                <th className="px-4 py-3 text-left font-medium">Segment</th>
+                <th className="px-4 py-3 text-left font-medium">Status</th>
+                <th className="px-4 py-3 text-left font-medium">Sent At</th>
+                <th className="px-4 py-3 font-medium text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 bg-white">
@@ -139,4 +140,5 @@ export default function CampaignsPage() {
       )}
     </div>
   );
+// ...existing code...
 }

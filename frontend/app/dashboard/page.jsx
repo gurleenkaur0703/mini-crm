@@ -70,49 +70,62 @@ export default function DashboardPage() {
   if (!session) return null;
 
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-3xl font-bold text-gray-800">📊 Dashboard</h1>
+    <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">📊 Dashboard</h1>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         {[
           { title: 'Total Customers', value: customers },
           { title: 'Total Orders', value: orders.length },
           { title: 'Total Segments', value: segments },
           { title: 'Total Campaigns', value: campaigns.length },
         ].map((card, i) => (
-          <div key={i} className="bg-white hover:shadow-lg transition rounded-xl p-6 border border-gray-200">
-            <h2 className="text-sm text-gray-500">{card.title}</h2>
-            <p className="text-4xl font-bold text-blue-600">{card.value}</p>
+          <div
+            key={i}
+            className="bg-white hover:shadow-lg transition rounded-xl p-4 sm:p-6 border border-gray-200 flex flex-col items-start"
+          >
+            <h2 className="text-xs sm:text-sm text-gray-500">{card.title}</h2>
+            <p className="text-2xl sm:text-4xl font-bold text-blue-600">{card.value}</p>
           </div>
         ))}
       </div>
 
-      {/* Chart */}
-      <div className="bg-white shadow rounded-xl p-6">
-        <h2 className="text-lg font-semibold mb-4">📈 Data Overview</h2>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+{/* Chart */}
+<div className="bg-white shadow rounded-xl p-4 sm:p-6">
+  <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">📈 Data Overview</h2>
+  <div className="overflow-x-auto">
+    <div className="w-full h-48 sm:h-56 md:h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData}>
+          <XAxis 
+            dataKey="name" 
+            interval={0} 
+            angle={-20} 
+            textAnchor="end"
+            tick={{ fontSize: 12 }}
+          />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+</div>
 
       {/* Recent Campaigns */}
-      <div className="bg-white shadow rounded-xl p-6">
-        <h2 className="text-lg font-semibold mb-4">🕒 Recent Campaigns</h2>
+      <div className="bg-white shadow rounded-xl p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">🕒 Recent Campaigns</h2>
         {recentCampaigns.length === 0 ? (
           <p className="text-gray-600">No campaigns yet.</p>
         ) : (
-          <ul className="space-y-4">
+          <ul className="space-y-3 sm:space-y-4">
             {recentCampaigns.map((camp) => (
-              <li key={camp._id} className="flex justify-between items-center">
+              <li key={camp._id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <div>
                   <p className="text-md font-semibold text-gray-800">{camp.name}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs sm:text-sm text-gray-500">
                     <span className={statusColor(camp.status)}>
                       ● {(camp.status ? camp.status.toUpperCase() : 'DRAFT')}
                     </span>{' '}
@@ -120,7 +133,10 @@ export default function DashboardPage() {
                     {camp.sentAt ? new Date(camp.sentAt).toLocaleString() : 'Not Sent'}
                   </p>
                 </div>
-                <Link href={`/campaigns/${camp._id}`} className="text-blue-600 hover:underline text-sm">
+                <Link
+                  href={`/campaigns/${camp._id}`}
+                  className="text-blue-600 hover:underline text-xs sm:text-sm"
+                >
                   View →
                 </Link>
               </li>

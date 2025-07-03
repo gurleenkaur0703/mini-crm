@@ -57,10 +57,11 @@ export default function CreateCampaignPage() {
     }
   };
 
+ // ...existing code...
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow space-y-6">
+    <div className="max-w-3xl mx-auto p-3 sm:p-6 bg-white rounded shadow space-y-6">
       <Toaster position="top-right" />
-      <h1 className="text-2xl font-bold"> Create Campaign</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold">Create Campaign</h1>
 
       {loading ? (
         <p>Loading segments...</p>
@@ -109,12 +110,13 @@ export default function CreateCampaignPage() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-             Create Campaign
+            Create Campaign
           </button>
         </form>
       )}
     </div>
   );
+// ...existing code...
 }

@@ -111,24 +111,25 @@ export default function CustomersPage() {
   if (status === 'loading' || loading) return <p className="p-4">Loading...</p>;
   if (!session) return null;
 
+// ...existing code...
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
 
       {/* Header Section */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Customer Directory</h1>
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Customer Directory</h1>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => router.push('/customers/add')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
           >
             ➕ Add New Customer
           </button>
           <input
             type="text"
             placeholder="Search by name, email, or phone..."
-            className="border p-2 rounded w-64"
+            className="border p-2 rounded w-full sm:w-64"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -139,15 +140,15 @@ export default function CustomersPage() {
       </div>
 
       {/* Upload Section */}
-      <div className="flex gap-4 items-center flex-wrap">
-        <label className="cursor-pointer bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center flex-wrap">
+        <label className="cursor-pointer bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full sm:w-auto text-center">
           Upload CSV
           <input type="file" accept=".csv" onChange={handleCSVUpload} className="hidden" />
         </label>
         <a
           href="/sample.csv"
           download
-          className="text-blue-600 hover:underline text-sm"
+          className="text-blue-600 hover:underline text-sm w-full sm:w-auto text-center"
         >
           Download Sample CSV
         </a>
@@ -157,17 +158,17 @@ export default function CustomersPage() {
 
       {/* Customers Table */}
       <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm sm:text-base">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium">Customer ID</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Name</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Email</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Phone</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Visits</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Total Spend</th>
-              <th className="px-4 py-3 text-left text-sm font-medium">Last Active</th>
-              <th className="px-4 py-3 text-sm font-medium text-center">Actions</th>
+              <th className="px-4 py-3 text-left font-medium">Customer ID</th>
+              <th className="px-4 py-3 text-left font-medium">Name</th>
+              <th className="px-4 py-3 text-left font-medium">Email</th>
+              <th className="px-4 py-3 text-left font-medium">Phone</th>
+              <th className="px-4 py-3 text-left font-medium">Visits</th>
+              <th className="px-4 py-3 text-left font-medium">Total Spend</th>
+              <th className="px-4 py-3 text-left font-medium">Last Active</th>
+              <th className="px-4 py-3 font-medium text-center">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-white">
@@ -201,11 +202,11 @@ export default function CustomersPage() {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center mt-4 gap-6">
+      <div className="flex flex-col sm:flex-row justify-center items-center mt-4 gap-2 sm:gap-6">
         <button
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
         >
           ⬅️ Prev
         </button>
@@ -217,11 +218,12 @@ export default function CustomersPage() {
         <button
           onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
         >
           Next ➡️
         </button>
       </div>
     </div>
   );
+// ...existing code...
 }

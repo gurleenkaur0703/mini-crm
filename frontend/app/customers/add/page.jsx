@@ -29,9 +29,10 @@ export default function AddCustomerForm() {
     }
   };
 
+  // ...existing code...
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-6 bg-white shadow rounded">
-      <h2 className="text-xl font-semibold">Add New Customer</h2>
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md sm:max-w-xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white shadow rounded">
+      <h2 className="text-xl sm:text-2xl font-semibold">Add New Customer</h2>
 
       <input
         name="name"
@@ -64,10 +65,11 @@ export default function AddCustomerForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+        className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
       >
         {submitting ? 'Adding...' : 'Add Customer'}
       </button>
     </form>
   );
+// ...existing code...
 }

@@ -43,9 +43,12 @@ export default function CreateSegmentPage() {
     }
   };
 
+// ...existing code...
+  if (loading) return <p className="p-4">Loading...</p>;
+
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Create Audience Segment</h1>
+    <div className="max-w-3xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white rounded shadow">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Edit Segment</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block mb-1 font-medium">Segment Name</label>
@@ -63,7 +66,7 @@ export default function CreateSegmentPage() {
           <select
             value={logic}
             onChange={(e) => setLogic(e.target.value)}
-            className="border p-2 rounded mb-4"
+            className="border p-2 rounded mb-4 w-full sm:w-auto"
           >
             {logicOptions.map((lg) => (
               <option key={lg} value={lg}>{lg}</option>
@@ -73,11 +76,11 @@ export default function CreateSegmentPage() {
           <label className="block mb-2 font-medium">Rules</label>
           <div className="space-y-4">
             {rules.map((rule, i) => (
-              <div key={i} className="flex gap-2 items-center">
+              <div key={i} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                 <select
                   value={rule.field}
                   onChange={(e) => updateRule(i, 'field', e.target.value)}
-                  className="border p-2 rounded"
+                  className="border p-2 rounded w-full sm:w-auto"
                 >
                   {fields.map((f) => (
                     <option key={f} value={f}>{f}</option>
@@ -86,7 +89,7 @@ export default function CreateSegmentPage() {
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(i, 'operator', e.target.value)}
-                  className="border p-2 rounded"
+                  className="border p-2 rounded w-full sm:w-auto"
                 >
                   {operators.map((op) => (
                     <option key={op} value={op}>{op}</option>
@@ -97,17 +100,15 @@ export default function CreateSegmentPage() {
                   value={rule.value}
                   onChange={(e) => updateRule(i, 'value', e.target.value)}
                   placeholder="Value"
-                  className="border p-2 rounded w-32"
+                  className="border p-2 rounded w-full sm:w-32"
                 />
-                {rules.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeRule(i)}
-                    className="text-red-500 hover:underline text-sm"
-                  >
-                    ✖ Remove
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => removeRule(i)}
+                  className="text-red-500 hover:underline text-sm w-full sm:w-auto"
+                >
+                  ✖ Remove
+                </button>
               </div>
             ))}
             <button
@@ -122,11 +123,12 @@ export default function CreateSegmentPage() {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
-          Save Segment
+          Update Segment
         </button>
       </form>
     </div>
   );
+// ...existing code...
 }

@@ -48,14 +48,15 @@ export default function SegmentsPage() {
   if (status === 'loading') return <p className="p-6">Loading...</p>;
   if (status === 'unauthenticated') return <p className="p-6">Redirecting to login...</p>;
 
+// ...existing code...
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Audience Segments</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold">Audience Segments</h1>
         <button
           onClick={() => router.push('/segments/create')}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
         >
           ➕ Create Segment
         </button>
@@ -65,19 +66,19 @@ export default function SegmentsPage() {
         <p>Loading...</p>
       ) : (
         <div className="overflow-x-auto bg-white shadow rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-[600px] w-full divide-y divide-gray-200 text-sm sm:text-base">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-medium">Name</th>
-                <th className="px-4 py-3 text-left text-sm font-medium">Rules</th>
-                <th className="px-4 py-3 text-sm font-medium text-center">Actions</th>
+                <th className="px-4 py-3 text-left font-medium">Name</th>
+                <th className="px-4 py-3 text-left font-medium">Rules</th>
+                <th className="px-4 py-3 text-center font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 bg-white">
               {segments.map((segment) => (
                 <tr key={segment._id}>
                   <td className="px-4 py-2 font-semibold">{segment.name}</td>
-                  <td className="px-4 py-2 text-sm text-gray-600">
+                  <td className="px-4 py-2 text-gray-600">
                     {segment.rules?.map((rule, i) => (
                       <span key={i} className="block">
                         {rule.field} {rule.operator} {rule.value}{' '}
@@ -107,4 +108,5 @@ export default function SegmentsPage() {
       )}
     </div>
   );
+// ...existing code...
 }

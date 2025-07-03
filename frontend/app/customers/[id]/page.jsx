@@ -52,13 +52,14 @@ export default function EditCustomerPage() {
 
   if (!form) return <p className="p-4">Loading...</p>;
 
+// ...existing code...
   return (
-    <div className="max-w-xl mx-auto mt-10 p-4 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4">Edit Customer</h2>
+    <div className="max-w-xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white shadow rounded">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4">Edit Customer</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {['name', 'email', 'phone', 'totalSpend', 'visits', 'lastActive'].map((field) => (
           <div key={field}>
-            <label className="block text-sm font-medium capitalize">{field}</label>
+            <label className="block text-sm font-medium capitalize mb-1">{field}</label>
             <input
               type={
                 field === 'lastActive'
@@ -79,11 +80,12 @@ export default function EditCustomerPage() {
         <button
           type="submit"
           disabled={submitting}
-          className={`px-4 py-2 rounded text-white ${submitting ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'}`}
+          className={`w-full sm:w-auto px-4 py-2 rounded text-white ${submitting ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'}`}
         >
           {submitting ? 'Saving...' : 'Save Changes'}
         </button>
       </form>
     </div>
   );
+// ...existing code...
 }

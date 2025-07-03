@@ -52,41 +52,41 @@ import Link from 'next/link';
 export default function HomePage() {
   const { data: session, status } = useSession();
 
+  // ...existing code...
   return (
     <div className="flex flex-col items-center justify-center min-h-[75vh] text-center px-4">
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-700 mb-4">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-700 mb-4 break-words">
         {session ? `Welcome, ${session.user.name}!` : 'Welcome to Mini CRM'}
       </h1>
 
-      <p className="text-lg text-gray-600 max-w-2xl mb-6">
+      <p className="text-base sm:text-lg text-gray-600 max-w-2xl mb-6">
         A smart customer relationship platform to manage customers and orders, segment audiences, run campaigns, and track performance insights.
       </p>
 
-      {/* If logged in → show dashboard and campaign buttons */}
       {session ? (
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex gap-4">
-            <Link href="/dashboard">
-              <button className="bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-blue-700 transition">
+        <div className="flex flex-col items-center gap-4 w-full">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
+            <Link href="/dashboard" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-blue-700 transition">
                 Go to Dashboard
               </button>
             </Link>
-            <Link href="/campaigns/create">
-              <button className="bg-green-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-700 transition">
+            <Link href="/campaigns/create" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-green-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-700 transition">
                 Create Campaign
               </button>
             </Link>
           </div>
         </div>
       ) : (
-        // If logged out → show login button
         <button
           onClick={() => signIn('google')}
-          className="bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-blue-700 transition"
+          className="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-blue-700 transition"
         >
           Sign in with Google
         </button>
       )}
     </div>
   );
+// ...existing code...
 }

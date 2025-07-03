@@ -69,7 +69,7 @@ export default function CampaignLogsPage({ params }) {
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       <Toaster position="top-right" />
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">📦 Campaign Logs</h1>
+        <h1 className="text-2xl font-bold text-gray-800"> Campaign Logs</h1>
         <button
           onClick={() => router.push(`/campaigns/${id}`)}
           className="text-blue-600 hover:underline"

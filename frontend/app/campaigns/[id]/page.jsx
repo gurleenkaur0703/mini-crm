@@ -74,11 +74,12 @@ export default function CampaignDetailPage({ params }) {
   if (loading) return <p className="p-4">Loading...</p>;
   if (!campaign) return <p className="p-4">No campaign found.</p>;
 
+  // ...existing code...
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-3 sm:p-6 space-y-6">
       <Toaster position="top-right" />
-      <h1 className="text-2xl font-bold text-gray-800">Campaign Details</h1>
-      <div className="bg-white shadow rounded p-4 space-y-2">
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Campaign Details</h1>
+      <div className="bg-white shadow rounded p-3 sm:p-4 space-y-2">
         <p><strong>Name:</strong> {campaign.name}</p>
         <p><strong>Message:</strong> {campaign.message}</p>
         <p><strong>Segment:</strong> {campaign.segmentId?.name || 'N/A'}</p>
@@ -86,25 +87,31 @@ export default function CampaignDetailPage({ params }) {
         {campaign.sentAt && <p><strong>Sent At:</strong> {new Date(campaign.sentAt).toLocaleString()}</p>}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
         <button
           onClick={handleSend}
           disabled={campaign.status === 'sent' || sending}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 w-full sm:w-auto"
         >
           {sending ? 'Sending...' : campaign.status === 'sent' ? 'Already Sent' : 'Send Campaign'}
         </button>
-        <button onClick={() => router.push(`/campaigns/${id}/logs`)} className="text-sm text-blue-600 underline hover:text-blue-800">
+        <button
+          onClick={() => router.push(`/campaigns/${id}/logs`)}
+          className="text-sm text-blue-600 underline hover:text-blue-800 w-full sm:w-auto text-center"
+        >
           View Delivery Logs →
         </button>
       </div>
 
-      <div className="bg-gray-100 rounded p-4">
+      <div className="bg-gray-100 rounded p-3 sm:p-4">
         <h3 className="text-lg font-semibold mb-2">📊 Delivery Summary</h3>
-        <p><strong>Audience Size:</strong> {logs.length}</p>
-        <p><strong>Sent:</strong> {sentCount}</p>
-        <p><strong>Failed:</strong> {failedCount}</p>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
+          <p><strong>Audience Size:</strong> {logs.length}</p>
+          <p><strong>Sent:</strong> {sentCount}</p>
+          <p><strong>Failed:</strong> {failedCount}</p>
+        </div>
       </div>
     </div>
   );
+// ...existing code...
 }
