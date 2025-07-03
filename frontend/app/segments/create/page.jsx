@@ -1,4 +1,4 @@
-//frontend/app/segments/create/page.jsx
+// frontend/app/segments/create/page.jsx
 'use client';
 
 import { useState } from 'react';
@@ -42,9 +42,6 @@ export default function CreateSegmentPage() {
       toast.error('Failed to create segment');
     }
   };
-
-// ...existing code...
-  if (loading) return <p className="p-4">Loading...</p>;
 
   return (
     <div className="max-w-3xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white rounded shadow">
@@ -130,5 +127,4 @@ export default function CreateSegmentPage() {
       </form>
     </div>
   );
-// ...existing code...
 }
