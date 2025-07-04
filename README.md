@@ -14,6 +14,32 @@ A lightweight CRM (Customer Relationship Management) system built with **Next.js
 - **Dashboard**: Visual overview of customers, orders, segments, and campaigns.
 - **Google OAuth**: Secure login using Google authentication.
 
+## 🖼️ Screenshots
+
+### Sign in Page  
+![Sign in](image-2.png)
+
+### Login Page  
+![Login](image-3.png)
+
+### Dashboard Overview  
+![Dashboard](image.png)
+
+### Customers Page 
+![Customers](image-6.png)
+
+### Orders Page 
+![Orders](image-5.png)
+
+### Segments Page 
+![Segments](image-4.png)
+
+### Campaign Page 
+![Campaign Page](image-7.png)
+
+### Campaign Details  
+![Campaign Details](image-1.png)
+
 ---
 
 ## 🧑‍💻 Tech Stack
@@ -22,7 +48,6 @@ A lightweight CRM (Customer Relationship Management) system built with **Next.js
 - **Backend**: Node.js, Express.js, Mongoose (MongoDB)
 - **Authentication**: NextAuth.js (Google OAuth)
 - **Database**: MongoDB Atlas (or local MongoDB)
-- **AI (Optional)**: OpenAI API for smart messaging/scheduling
 
 ---
 
@@ -39,3 +64,22 @@ A lightweight CRM (Customer Relationship Management) system built with **Next.js
 ```bash
 git clone https://github.com/gurleenkaur0703/mini-crm.git
 cd mini-crm
+```
+
+### 1. Setup Backend
+
+```bash
+cd backend
+npm install
+# Create a .env file with MONGODB_URI
+node index.js
+```
+
+### 1. Setup Frontend
+
+```bash
+cd frontend
+npm install
+# Create .env.local for NextAuth config
+npm run dev
+```
