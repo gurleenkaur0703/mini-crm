@@ -8,7 +8,15 @@ const PORT = 5000;
 // const logsRoute = require('./routes/logs');
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000', 
+  'https://mini-crm-azure.vercel.app' 
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB Connection
