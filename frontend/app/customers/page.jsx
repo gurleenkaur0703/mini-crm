@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
-import axios from 'axios';
 import Papa from 'papaparse';
 import toast, { Toaster } from 'react-hot-toast';
+import { fetchFromApi } from '../../utils/api'; // ✅ Adjust path as needed
 
 export default function CustomersPage() {
   const { data: session, status } = useSession();
@@ -20,14 +20,12 @@ export default function CustomersPage() {
 
   const itemsPerPage = 10;
 
-  // Redirect to Google login if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       signIn(); // Google login
     }
   }, [status]);
 
-  // Fetch customers after authentication
   useEffect(() => {
     if (status === 'authenticated') {
       fetchCustomers();
@@ -35,9 +33,10 @@ export default function CustomersPage() {
   }, [status]);
 
   const fetchCustomers = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/customers');
-      setCustomers(res.data);
+      const data = await fetchFromApi('/api/customers');
+      setCustomers(data);
     } catch (err) {
       console.error('Failed to load customers:', err);
       setError('Failed to load customers.');
@@ -49,8 +48,8 @@ export default function CustomersPage() {
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this customer?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/customers/${id}`);
-        setCustomers(customers.filter((c) => c._id !== id));
+        await fetchFromApi(`/api/customers/${id}`, { method: 'DELETE' });
+        setCustomers((prev) => prev.filter((c) => c._id !== id));
         toast.success('Customer deleted successfully');
       } catch (err) {
         toast.error('Failed to delete customer');
@@ -84,15 +83,22 @@ export default function CustomersPage() {
         }
 
         try {
-          await axios.post('http://localhost:5000/api/customers/bulk', { customers: rows });
+          await fetchFromApi('/api/customers/bulk', {
+            method: 'POST',
+            body: JSON.stringify({ customers: rows }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
           toast.success('Customers uploaded!');
           fetchCustomers();
         } catch (err) {
           toast.error('Upload failed');
+          console.error(err);
         } finally {
           setUploading(false);
         }
-      }
+      },
     });
   };
 
@@ -111,7 +117,6 @@ export default function CustomersPage() {
   if (status === 'loading' || loading) return <p className="p-4">Loading...</p>;
   if (!session) return null;
 
-// ...existing code...
   return (
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
@@ -180,7 +185,9 @@ export default function CustomersPage() {
                 <td className="px-4 py-2">{cust.phone}</td>
                 <td className="px-4 py-2">{cust.visits}</td>
                 <td className="px-4 py-2">${cust.totalSpend?.toFixed(2) ?? '0.00'}</td>
-                <td className="px-4 py-2">{new Date(cust.lastActive).toLocaleDateString()}</td>
+                <td className="px-4 py-2">
+                  {cust.lastActive ? new Date(cust.lastActive).toLocaleDateString() : '—'}
+                </td>
                 <td className="px-4 py-2 text-center">
                   <button
                     onClick={() => router.push(`/customers/${cust._id}`)}
@@ -225,5 +232,4 @@ export default function CustomersPage() {
       </div>
     </div>
   );
-// ...existing code...
 }

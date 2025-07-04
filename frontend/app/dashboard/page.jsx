@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
-import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Link from 'next/link';
+import { fetchFromApi } from '../../utils/api'; // ✅ Make sure this is the correct path
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      signIn();
+      signIn(); // Redirect to login
     }
   }, [status]);
 
@@ -28,17 +28,17 @@ export default function DashboardPage() {
 
   const fetchStats = async () => {
     try {
-      const [custRes, segRes, campRes, orderRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/customers'),
-        axios.get('http://localhost:5000/api/segments'),
-        axios.get('http://localhost:5000/api/campaigns'),
-        axios.get('http://localhost:5000/api/orders'),
+      const [custData, segData, campData, orderData] = await Promise.all([
+        fetchFromApi('/api/customers'),
+        fetchFromApi('/api/segments'),
+        fetchFromApi('/api/campaigns'),
+        fetchFromApi('/api/orders'),
       ]);
 
-      setCustomers(custRes.data.length);
-      setSegments(segRes.data.length);
-      setCampaigns(campRes.data);
-      setOrders(orderRes.data);
+      setCustomers(custData.length);
+      setSegments(segData.length);
+      setCampaigns(campData);
+      setOrders(orderData);
     } catch (err) {
       console.error('Error loading dashboard data:', err);
     } finally {
@@ -50,12 +50,7 @@ export default function DashboardPage() {
     status === 'sent' ? 'text-green-600' : 'text-yellow-500';
 
   const recentCampaigns = campaigns
-    .filter(camp => camp && camp._id && camp.status) // remove deleted/invalid
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 5);
-
-  const recentOrders = orders
-    .filter(order => order && order._id) // sanity check
+    .filter(camp => camp && camp._id && camp.status)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 5);
 
@@ -91,28 +86,28 @@ export default function DashboardPage() {
         ))}
       </div>
 
-{/* Chart */}
-<div className="bg-white shadow rounded-xl p-4 sm:p-6">
-  <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">📈 Data Overview</h2>
-  <div className="overflow-x-auto">
-    <div className="w-full h-48 sm:h-56 md:h-64">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData}>
-          <XAxis 
-            dataKey="name" 
-            interval={0} 
-            angle={-20} 
-            textAnchor="end"
-            tick={{ fontSize: 12 }}
-          />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
-</div>
+      {/* Chart */}
+      <div className="bg-white shadow rounded-xl p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">📈 Data Overview</h2>
+        <div className="overflow-x-auto">
+          <div className="w-full h-48 sm:h-56 md:h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <XAxis 
+                  dataKey="name" 
+                  interval={0} 
+                  angle={-20} 
+                  textAnchor="end"
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
 
       {/* Recent Campaigns */}
       <div className="bg-white shadow rounded-xl p-4 sm:p-6">

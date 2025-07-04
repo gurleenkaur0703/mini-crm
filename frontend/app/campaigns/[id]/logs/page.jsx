@@ -1,13 +1,13 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { fetchFromApi } from '../../utils/api'; // adjust the path to your utils/api.js
 
 export default function CampaignLogsPage({ params }) {
-  const { id } = use(params); // ✅ unwrap params correctly
+  const { id } = params; // correctly destructure params
   const router = useRouter();
   const { status } = useSession();
 
@@ -25,14 +25,19 @@ export default function CampaignLogsPage({ params }) {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/campaigns/${id}/logs`);
-      setLogs(res.data);
+      const data = await fetchFromApi(`/api/campaigns/${id}/logs`);
+      setLogs(data);
     } catch (err) {
       console.error(err);
       toast.error('Failed to load logs');
     } finally {
       setLoading(false);
     }
+  };
+
+  const filteredLogs = () => {
+    if (filter === 'all') return logs;
+    return logs.filter(log => log.status === filter);
   };
 
   const exportCSV = () => {
@@ -49,7 +54,7 @@ export default function CampaignLogsPage({ params }) {
       ]);
     });
 
-    const csvContent = rows.map(row => row.join(',')).join('\n');
+    const csvContent = rows.map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const link = document.createElement('a');
 
@@ -58,18 +63,13 @@ export default function CampaignLogsPage({ params }) {
     link.click();
   };
 
-  const filteredLogs = () => {
-    if (filter === 'all') return logs;
-    return logs.filter(log => log.status === filter);
-  };
-
   if (loading) return <p className="p-6">Loading logs...</p>;
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       <Toaster position="top-right" />
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800"> Campaign Logs</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Campaign Logs</h1>
         <button
           onClick={() => router.push(`/campaigns/${id}`)}
           className="text-blue-600 hover:underline"
@@ -115,7 +115,11 @@ export default function CampaignLogsPage({ params }) {
                 <td className="px-4 py-2">{log.customerId?.name}</td>
                 <td className="px-4 py-2">{log.customerId?.email}</td>
                 <td className="px-4 py-2 text-sm">{log.message}</td>
-                <td className={`px-4 py-2 capitalize ${log.status === 'failed' ? 'text-red-600' : 'text-green-600'}`}>
+                <td
+                  className={`px-4 py-2 capitalize ${
+                    log.status === 'failed' ? 'text-red-600' : 'text-green-600'
+                  }`}
+                >
                   {log.status}
                 </td>
                 <td className="px-4 py-2 text-sm">
@@ -125,7 +129,9 @@ export default function CampaignLogsPage({ params }) {
             ))}
             {filteredLogs().length === 0 && (
               <tr>
-                <td colSpan="5" className="px-4 py-4 text-center text-gray-500">No logs found</td>
+                <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                  No logs found
+                </td>
               </tr>
             )}
           </tbody>

@@ -1,14 +1,13 @@
 'use client';
 
-import { use } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { fetchFromApi } from '../../utils/api';  // adjust path as needed
 
 export default function CampaignDetailPage({ params }) {
-  const { id } = use(params);
+  const { id } = params;
   const router = useRouter();
   const { status } = useSession();
 
@@ -28,10 +27,10 @@ export default function CampaignDetailPage({ params }) {
 
   const fetchCampaign = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/campaigns/${id}`);
-      setCampaign(res.data);
+      const data = await fetchFromApi(`/api/campaigns/${id}`);
+      setCampaign(data);
     } catch (err) {
-      if (err.response?.status === 404) {
+      if (err.message.includes('404')) {
         console.warn('Campaign not found, probably deleted');
       } else {
         toast.error('Failed to load campaign');
@@ -43,8 +42,8 @@ export default function CampaignDetailPage({ params }) {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/campaigns/${id}/logs`);
-      setLogs(res.data);
+      const data = await fetchFromApi(`/api/campaigns/${id}/logs`);
+      setLogs(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -56,8 +55,8 @@ export default function CampaignDetailPage({ params }) {
     if (!confirm('Send this campaign now?')) return;
     setSending(true);
     try {
-      const res = await axios.post(`http://localhost:5000/api/campaigns/${id}/send`);
-      toast.success(`Sent to ${res.data.count} customers`);
+      const data = await fetchFromApi(`/api/campaigns/${id}/send`, { method: 'POST' });
+      toast.success(`Sent to ${data.count} customers`);
       fetchCampaign();
       fetchLogs();
     } catch (err) {
@@ -74,7 +73,6 @@ export default function CampaignDetailPage({ params }) {
   if (loading) return <p className="p-4">Loading...</p>;
   if (!campaign) return <p className="p-4">No campaign found.</p>;
 
-  // ...existing code...
   return (
     <div className="max-w-4xl mx-auto p-3 sm:p-6 space-y-6">
       <Toaster position="top-right" />
@@ -113,5 +111,4 @@ export default function CampaignDetailPage({ params }) {
       </div>
     </div>
   );
-// ...existing code...
 }

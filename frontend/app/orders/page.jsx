@@ -1,11 +1,10 @@
-// app/orders/page.jsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { fetchFromApi } from '../../utils/api';
 
 export default function OrdersPage() {
   const { data: session, status } = useSession();
@@ -26,10 +25,11 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/orders');
-      setOrders(res.data);
+      const data = await fetchFromApi('/api/orders');
+      setOrders(data);
     } catch (err) {
       toast.error('Failed to load orders');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -38,11 +38,12 @@ export default function OrdersPage() {
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this order?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/orders/${id}`);
-        setOrders(orders.filter((o) => o._id !== id));
+        await fetchFromApi(`/api/orders/${id}`, { method: 'DELETE' });
+        setOrders((prev) => prev.filter((o) => o._id !== id));
         toast.success('Order deleted');
       } catch (err) {
         toast.error('Delete failed');
+        console.error(err);
       }
     }
   };
@@ -62,7 +63,6 @@ export default function OrdersPage() {
     currentPage * itemsPerPage
   );
 
- // ...existing code...
   return (
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
@@ -159,5 +159,4 @@ export default function OrdersPage() {
       )}
     </div>
   );
-// ...existing code...
 }

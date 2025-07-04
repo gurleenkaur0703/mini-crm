@@ -1,11 +1,10 @@
-//frontend/app/campaigns/page.jsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { fetchFromApi } from '../../utils/api'; // adjust the path if needed
 
 export default function CampaignsPage() {
   const router = useRouter();
@@ -24,8 +23,8 @@ export default function CampaignsPage() {
 
   const fetchCampaigns = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/campaigns');
-      setCampaigns(res.data);
+      const data = await fetchFromApi('/api/campaigns');
+      setCampaigns(data);
     } catch (err) {
       console.error(err);
       toast.error('Failed to load campaigns');
@@ -39,8 +38,10 @@ export default function CampaignsPage() {
 
     setSendingId(id);
     try {
-      const res = await axios.post(`http://localhost:5000/api/campaigns/${id}/send`);
-      toast.success(`Sent to ${res.data.count} customers`);
+      const data = await fetchFromApi(`/api/campaigns/${id}/send`, {
+        method: 'POST',
+      });
+      toast.success(`Sent to ${data.count} customers`);
       fetchCampaigns(); // refresh list
     } catch (err) {
       console.error(err);
@@ -54,16 +55,17 @@ export default function CampaignsPage() {
     if (!confirm('Are you sure you want to delete this campaign?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/campaigns/${id}`);
+      await fetchFromApi(`/api/campaigns/${id}`, {
+        method: 'DELETE',
+      });
       toast.success('Campaign deleted');
-      setCampaigns(campaigns.filter(c => c._id !== id));
+      setCampaigns((prev) => prev.filter(c => c._id !== id));
     } catch (err) {
       console.error(err);
       toast.error('Failed to delete');
     }
   };
 
-  // ...existing code...
   return (
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
@@ -129,7 +131,7 @@ export default function CampaignsPage() {
               ))}
               {campaigns.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="text-center px-4 py-6 text-gray-500">
+                  <td colSpan={5} className="text-center px-4 py-6 text-gray-500">
                     No campaigns created yet.
                   </td>
                 </tr>
@@ -140,5 +142,4 @@ export default function CampaignsPage() {
       )}
     </div>
   );
-// ...existing code...
 }

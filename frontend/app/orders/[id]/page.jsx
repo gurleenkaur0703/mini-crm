@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { fetchFromApi } from '../../utils/api'; // adjust the path if needed
 
 export default function EditOrderPage({ params }) {
   const [form, setForm] = useState(null);
@@ -12,17 +12,24 @@ export default function EditOrderPage({ params }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [orderRes, customersRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/orders/${params.id}`),
-        axios.get('http://localhost:5000/api/customers'),
-      ]);
-      setForm({
-        customerId: orderRes.data.customerId._id,
-        orderAmount: orderRes.data.orderAmount,
-        orderDate: orderRes.data.orderDate.split('T')[0],
-        status: orderRes.data.status,
-      });
-      setCustomers(customersRes.data);
+      try {
+        const [orderData, customerList] = await Promise.all([
+          fetchFromApi(`/api/orders/${params.id}`),
+          fetchFromApi('/api/customers'),
+        ]);
+
+        setForm({
+          customerId: orderData.customerId._id,
+          orderAmount: orderData.orderAmount,
+          orderDate: orderData.orderDate.split('T')[0],
+          status: orderData.status,
+        });
+
+        setCustomers(customerList);
+      } catch (err) {
+        toast.error('Failed to load order data');
+        console.error(err);
+      }
     };
 
     fetchData();
@@ -35,7 +42,10 @@ export default function EditOrderPage({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/orders/${params.id}`, form);
+      await fetchFromApi(`/api/orders/${params.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(form),
+      });
       toast.success('Order updated!');
       router.push('/orders');
     } catch (err) {
@@ -76,6 +86,7 @@ export default function EditOrderPage({ params }) {
           onChange={handleChange}
           required
           className="w-full p-2 border rounded"
+          min={0}
         />
 
         <input
@@ -108,5 +119,4 @@ export default function EditOrderPage({ params }) {
       </form>
     </div>
   );
-
 }

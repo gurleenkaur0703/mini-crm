@@ -1,37 +1,40 @@
-//frontend/app/segments/[id]/page.jsx
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import { fetchFromApi } from '../../../utils/api'; // adjust path if needed
 
 const fields = ['visits', 'totalSpend', 'lastActive'];
 const operators = ['>', '>=', '<', '<=', '==', '!='];
 const logicOptions = ['AND', 'OR'];
 
 export default function EditSegmentPage({ params }) {
-  const { id } = use(params); // ✅ unwrap params safely
+  const { id } = params;
 
   const [name, setName] = useState('');
   const [rules, setRules] = useState([]);
   const [logic, setLogic] = useState('AND');
   const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/segments/${id}`)
-      .then((res) => {
-        setName(res.data.name);
-        setRules(res.data.rules || []);
-        setLogic(res.data.logic || 'AND');
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchSegment = async () => {
+      try {
+        const data = await fetchFromApi(`/api/segments/${id}`);
+        setName(data?.name || '');
+        setRules(data?.rules || []);
+        setLogic(data?.logic || 'AND');
+      } catch (err) {
         console.error('Failed to fetch segment', err);
         toast.error('Failed to load segment');
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSegment();
   }, [id]);
 
   const updateRule = (index, key, value) => {
@@ -51,10 +54,10 @@ export default function EditSegmentPage({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/segments/${id}`, {
-        name,
-        rules,
-        logic,
+      await fetchFromApi(`/api/segments/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ name, rules, logic }),
+        headers: { 'Content-Type': 'application/json' },
       });
       toast.success('Segment updated');
       router.push('/segments');
@@ -64,9 +67,6 @@ export default function EditSegmentPage({ params }) {
     }
   };
 
-  if (loading) return <p className="p-4">Loading...</p>;
-
-// ...existing code...
   if (loading) return <p className="p-4">Loading...</p>;
 
   return (
@@ -153,5 +153,4 @@ export default function EditSegmentPage({ params }) {
       </form>
     </div>
   );
-// ...existing code...
 }

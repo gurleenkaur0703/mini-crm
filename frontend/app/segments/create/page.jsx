@@ -1,10 +1,9 @@
-// frontend/app/segments/create/page.jsx
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import { fetchFromApi } from '../../utils/api';
 
 const fields = ['visits', 'totalSpend', 'lastActive'];
 const operators = ['>', '>=', '<', '<=', '==', '!='];
@@ -34,7 +33,12 @@ export default function CreateSegmentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/segments', { name, rules, logic });
+      await fetchFromApi('/api/segments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rules, logic }),
+      });
+
       toast.success('Segment created');
       router.push('/segments');
     } catch (err) {
@@ -45,7 +49,7 @@ export default function CreateSegmentPage() {
 
   return (
     <div className="max-w-3xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white rounded shadow">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Edit Segment</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Create Segment</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block mb-1 font-medium">Segment Name</label>
@@ -122,7 +126,7 @@ export default function CreateSegmentPage() {
           type="submit"
           className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
-          Update Segment
+          Create Segment
         </button>
       </form>
     </div>

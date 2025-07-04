@@ -1,7 +1,9 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { fetchFromApi } from '../../utils/api'; // Adjust the import path as needed
 
 export default function EditCustomerPage() {
   const [form, setForm] = useState(null);
@@ -17,34 +19,45 @@ export default function EditCustomerPage() {
   useEffect(() => {
     if (!params?.id) return;
 
-    axios.get(`http://localhost:5000/api/customers/${params.id}`).then((res) => {
-      const customer = res.data;
-      setForm({
-        ...customer,
-        lastActive: formatDate(customer.lastActive),
-        totalSpend: customer.totalSpend ?? 0,
-        visits: customer.visits ?? 0,
-      });
-    });
+    const fetchCustomer = async () => {
+      try {
+        const customer = await fetchFromApi(`/api/customers/${params.id}`);
+        setForm({
+          ...customer,
+          lastActive: formatDate(customer.lastActive),
+          totalSpend: customer.totalSpend ?? 0,
+          visits: customer.visits ?? 0,
+        });
+      } catch (error) {
+        console.error('Failed to load customer:', error);
+        toast.error('Failed to load customer data');
+      }
+    };
+
+    fetchCustomer();
   }, [params]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'totalSpend' || name === 'visits') {
-      setForm({ ...form, [name]: Number(value) });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === 'totalSpend' || name === 'visits' ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await axios.put(`http://localhost:5000/api/customers/${params.id}`, form);
+      await fetchFromApi(`/api/customers/${params.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(form),
+      });
+      toast.success('Customer updated successfully!');
       router.push('/customers');
     } catch (error) {
       console.error('Failed to update customer:', error);
+      toast.error('Failed to update customer');
     } finally {
       setSubmitting(false);
     }
@@ -52,9 +65,9 @@ export default function EditCustomerPage() {
 
   if (!form) return <p className="p-4">Loading...</p>;
 
-// ...existing code...
   return (
     <div className="max-w-xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white shadow rounded">
+      <Toaster position="top-right" />
       <h2 className="text-xl sm:text-2xl font-bold mb-4">Edit Customer</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {['name', 'email', 'phone', 'totalSpend', 'visits', 'lastActive'].map((field) => (
@@ -80,12 +93,13 @@ export default function EditCustomerPage() {
         <button
           type="submit"
           disabled={submitting}
-          className={`w-full sm:w-auto px-4 py-2 rounded text-white ${submitting ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'}`}
+          className={`w-full sm:w-auto px-4 py-2 rounded text-white ${
+            submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
+          }`}
         >
           {submitting ? 'Saving...' : 'Save Changes'}
         </button>
       </form>
     </div>
   );
-// ...existing code...
 }

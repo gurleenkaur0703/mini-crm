@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { fetchFromApi } from '../../utils/api';
 
 export default function SegmentsPage() {
   const { data: session, status } = useSession();
@@ -14,7 +14,7 @@ export default function SegmentsPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/api/auth/signin');  // redirect if not logged in
+      router.push('/api/auth/signin');
     } else if (status === 'authenticated') {
       fetchSegments();
     }
@@ -22,8 +22,8 @@ export default function SegmentsPage() {
 
   const fetchSegments = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/segments');
-      setSegments(res.data);
+      const data = await fetchFromApi('/api/segments');
+      setSegments(data);
     } catch (err) {
       console.error('Failed to load segments:', err);
       toast.error('Failed to load segments');
@@ -35,8 +35,8 @@ export default function SegmentsPage() {
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this segment?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/segments/${id}`);
-        setSegments(segments.filter((s) => s._id !== id));
+        await fetchFromApi(`/api/segments/${id}`, { method: 'DELETE' });
+        setSegments((prev) => prev.filter((s) => s._id !== id));
         toast.success('Segment deleted');
       } catch (err) {
         console.error(err);
@@ -48,7 +48,6 @@ export default function SegmentsPage() {
   if (status === 'loading') return <p className="p-6">Loading...</p>;
   if (status === 'unauthenticated') return <p className="p-6">Redirecting to login...</p>;
 
-// ...existing code...
   return (
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
       <Toaster position="top-right" />
@@ -108,5 +107,4 @@ export default function SegmentsPage() {
       )}
     </div>
   );
-// ...existing code...
 }

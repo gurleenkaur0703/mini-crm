@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { fetchFromApi } from '../../utils/api'; // Adjust path if needed
 
 export default function CreateCampaignPage() {
   const { data: session, status } = useSession();
@@ -26,8 +26,8 @@ export default function CreateCampaignPage() {
 
   const fetchSegments = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/segments');
-      setSegments(res.data);
+      const data = await fetchFromApi('/api/segments');
+      setSegments(data);
     } catch (err) {
       toast.error('Failed to load segments');
     } finally {
@@ -44,20 +44,18 @@ export default function CreateCampaignPage() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/campaigns', {
-        name,
-        message,
-        segmentId,
+      const data = await fetchFromApi('/api/campaigns', {
+        method: 'POST',
+        body: JSON.stringify({ name, message, segmentId }),
       });
       toast.success('Campaign created!');
-      router.push(`/campaigns/${res.data._id}`);
+      router.push(`/campaigns/${data._id}`);
     } catch (err) {
       console.error(err);
       toast.error('Failed to create campaign');
     }
   };
 
- // ...existing code...
   return (
     <div className="max-w-3xl mx-auto p-3 sm:p-6 bg-white rounded shadow space-y-6">
       <Toaster position="top-right" />
@@ -118,5 +116,4 @@ export default function CreateCampaignPage() {
       )}
     </div>
   );
-// ...existing code...
 }
