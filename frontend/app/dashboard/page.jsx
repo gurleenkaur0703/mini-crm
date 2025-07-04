@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Link from 'next/link';
-import { fetchFromApi } from '../../utils/api'; // ✅ Make sure this is the correct path
+import { fetchFromApi } from '@/utils/api';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();

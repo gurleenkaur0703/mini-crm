@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import toast, { Toaster } from 'react-hot-toast';
-import { fetchFromApi } from '../../utils/api'; // adjust the path to your utils/api.js
+import { fetchFromApi } from '@/utils/api';
 
 export default function CampaignLogsPage({ params }) {
   const { id } = params; // correctly destructure params

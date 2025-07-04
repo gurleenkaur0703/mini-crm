@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
-import { fetchFromApi } from '../../utils/api'; // Adjust the import path as needed
+import { fetchFromApi } from '@/utils/api';
 
 export default function EditCustomerPage() {
   const [form, setForm] = useState(null);

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
-import { fetchFromApi } from '../../utils/api';
+import { fetchFromApi } from '@/utils/api';
 
 export default function SegmentsPage() {
   const { data: session, status } = useSession();

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
 import Papa from 'papaparse';
 import toast, { Toaster } from 'react-hot-toast';
-import { fetchFromApi } from '../../utils/api'; // ✅ Adjust path as needed
+import { fetchFromApi } from '@/utils/api';
 
 export default function CustomersPage() {
   const { data: session, status } = useSession();

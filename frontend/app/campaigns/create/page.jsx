@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
-import { fetchFromApi } from '../../utils/api'; // Adjust path if needed
+import { fetchFromApi } from '@/utils/api';
 
 export default function CreateCampaignPage() {
   const { data: session, status } = useSession();

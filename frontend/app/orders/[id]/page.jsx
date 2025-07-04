@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { fetchFromApi } from '../../utils/api'; // adjust the path if needed
+import { fetchFromApi } from '@/utils/api';
 
 export default function EditOrderPage({ params }) {
   const [form, setForm] = useState(null);

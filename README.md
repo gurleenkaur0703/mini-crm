@@ -17,28 +17,28 @@ A lightweight CRM (Customer Relationship Management) system built with **Next.js
 ## 🖼️ Screenshots
 
 ### Sign in Page  
-![Sign in](images\image-2.png)
+![Sign in](images/image-2.png)
 
 ### Login Page  
-![Login](images\image-3.png)
+![Login](images/image-3.png)
 
 ### Dashboard Overview  
-![Dashboard](images\image.png)
+![Dashboard](images/image.png)
 
 ### Customers Page 
-![Customers](images\image-6.png)
+![Customers](images/image-6.png)
 
 ### Orders Page 
-![Orders](images\image-5.png)
+![Orders](images/image-5.png)
 
 ### Segments Page 
-![Segments](images\image-4.png)
+![Segments](images/image-4.png)
 
 ### Campaign Page 
-![Campaign Page](images\image-7.png)
+![Campaign Page](images/image-7.png)
 
 ### Campaign Details  
-![Campaign Details](images\image-1.png)
+![Campaign Details](images/image-1.png)
 
 ---
 

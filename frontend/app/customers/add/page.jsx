@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
-import { fetchFromApi } from '../../utils/api'; // Adjust path as needed
+import { fetchFromApi } from '@/utils/api';
 
 export default function AddCustomerForm() {
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
