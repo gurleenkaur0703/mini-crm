@@ -57,7 +57,7 @@ export default function CreateCampaignPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-3 sm:p-6 bg-white rounded shadow space-y-6">
+    <div className="max-w-3xl mx-auto p-3 sm:p-6 bg-white dark:bg-gray-900 rounded shadow space-y-6 text-gray-900 dark:text-gray-100 transition-colors">
       <Toaster position="top-right" />
       <h1 className="text-2xl sm:text-3xl font-bold">Create Campaign</h1>
 
@@ -71,7 +71,7 @@ export default function CreateCampaignPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border p-2 rounded"
+              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 rounded"
               placeholder="Enter campaign name"
               required
             />
@@ -82,7 +82,7 @@ export default function CreateCampaignPage() {
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full border p-2 rounded"
+              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 rounded"
               placeholder="Enter message to send"
               rows={4}
               required
@@ -94,7 +94,7 @@ export default function CreateCampaignPage() {
             <select
               value={segmentId}
               onChange={(e) => setSegmentId(e.target.value)}
-              className="w-full border p-2 rounded"
+              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 rounded"
               required
             >
               <option value="">-- Select Segment --</option>
@@ -108,7 +108,7 @@ export default function CreateCampaignPage() {
 
           <button
             type="submit"
-            className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="w-full sm:w-auto bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 dark:hover:bg-blue-600"
           >
             Create Campaign
           </button>

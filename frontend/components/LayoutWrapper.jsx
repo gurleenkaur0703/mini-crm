@@ -1,16 +1,17 @@
-// components/LayoutWrapper.jsx
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
 import Navbar from './Navbar';
 
-// ...existing code...
 export default function LayoutWrapper({ children }) {
   return (
     <SessionProvider>
-      <Navbar />
-      <main className="max-w-7xl mx-auto p-3 sm:p-6 w-full">{children}</main>
+      <div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+        <Navbar />
+        <main className="max-w-7xl mx-auto p-3 sm:p-6 w-full">
+          {children}
+        </main>
+      </div>
     </SessionProvider>
   );
 }
-// ...existing code...

@@ -114,16 +114,19 @@ export default function CustomersPage() {
     currentPage * itemsPerPage
   );
 
-  if (status === 'loading' || loading) return <p className="p-4">Loading...</p>;
+  if (status === 'loading' || loading)
+    return <p className="p-4 text-gray-700 dark:text-gray-300">Loading...</p>;
   if (!session) return null;
 
   return (
-    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
+    <div className="p-3 sm:p-6 space-y-4 sm:space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <Toaster position="top-right" />
 
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Customer Directory</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+          Customer Directory
+        </h1>
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => router.push('/customers/add')}
@@ -134,7 +137,7 @@ export default function CustomersPage() {
           <input
             type="text"
             placeholder="Search by name, email, or phone..."
-            className="border p-2 rounded w-full sm:w-64"
+            className="border p-2 rounded w-full sm:w-64 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -153,18 +156,18 @@ export default function CustomersPage() {
         <a
           href="/sample.csv"
           download
-          className="text-blue-600 hover:underline text-sm w-full sm:w-auto text-center"
+          className="text-blue-600 hover:underline text-sm w-full sm:w-auto text-center dark:text-blue-400"
         >
           Download Sample CSV
         </a>
-        {uploading && <span className="text-sm text-gray-500">Uploading...</span>}
-        {error && <span className="text-sm text-red-600">{error}</span>}
+        {uploading && <span className="text-sm text-gray-500 dark:text-gray-400">Uploading...</span>}
+        {error && <span className="text-sm text-red-600 dark:text-red-400">{error}</span>}
       </div>
 
       {/* Customers Table */}
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm sm:text-base">
-          <thead className="bg-gray-100">
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-lg">
+        <table className="min-w-[700px] w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm sm:text-base text-gray-900 dark:text-gray-100">
+          <thead className="bg-gray-100 dark:bg-gray-700">
             <tr>
               <th className="px-4 py-3 text-left font-medium">Customer ID</th>
               <th className="px-4 py-3 text-left font-medium">Name</th>
@@ -176,10 +179,10 @@ export default function CustomersPage() {
               <th className="px-4 py-3 font-medium text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100 bg-white">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800">
             {paginatedCustomers.map((cust) => (
               <tr key={cust._id}>
-                <td className="px-4 py-2 text-gray-500">{cust._id}</td>
+                <td className="px-4 py-2 text-gray-500 dark:text-gray-400">{cust._id}</td>
                 <td className="px-4 py-2">{cust.name}</td>
                 <td className="px-4 py-2">{cust.email}</td>
                 <td className="px-4 py-2">{cust.phone}</td>
@@ -191,13 +194,13 @@ export default function CustomersPage() {
                 <td className="px-4 py-2 text-center">
                   <button
                     onClick={() => router.push(`/customers/${cust._id}`)}
-                    className="text-blue-600 hover:underline mr-2"
+                    className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300 mr-2"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(cust._id)}
-                    className="text-red-600 hover:underline"
+                    className="text-red-600 hover:underline dark:text-red-400 dark:hover:text-red-300"
                   >
                     Delete
                   </button>
@@ -213,19 +216,19 @@ export default function CustomersPage() {
         <button
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
+          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-50 w-full sm:w-auto"
         >
           ⬅️ Prev
         </button>
 
-        <p className="text-sm text-gray-700 min-w-[120px] text-center">
+        <p className="text-sm text-gray-700 dark:text-gray-300 min-w-[120px] text-center">
           Page {currentPage} of {totalPages}
         </p>
 
         <button
           onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-50 w-full sm:w-auto"
+          className="px-3 py-1 border rounded text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-50 w-full sm:w-auto"
         >
           Next ➡️
         </button>

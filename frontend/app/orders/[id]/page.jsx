@@ -57,7 +57,7 @@ export default function EditOrderPage({ params }) {
   if (!form) return <p className="p-4">Loading...</p>;
 
   return (
-    <div className="max-w-lg sm:max-w-2xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white shadow rounded">
+    <div className="max-w-lg sm:max-w-2xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white dark:bg-gray-800 shadow rounded text-gray-900 dark:text-gray-100">
       <h2 className="text-lg sm:text-xl font-semibold mb-4">Edit Order</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -67,7 +67,7 @@ export default function EditOrderPage({ params }) {
             value={form.customerId}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
           >
             <option value="">Select a customer</option>
             {customers.map((cust) => (
@@ -85,7 +85,7 @@ export default function EditOrderPage({ params }) {
           value={form.orderAmount}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
           min={0}
         />
 
@@ -95,14 +95,14 @@ export default function EditOrderPage({ params }) {
           value={form.orderDate}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
         />
 
         <select
           name="status"
           value={form.status}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
         >
           <option value="Pending">Pending</option>
           <option value="Shipped">Shipped</option>

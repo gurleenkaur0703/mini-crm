@@ -48,7 +48,7 @@ export default function CreateSegmentPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white rounded shadow">
+    <div className="max-w-3xl mx-auto mt-6 sm:mt-10 px-3 sm:px-6 py-6 bg-white rounded shadow dark:bg-gray-900 dark:text-gray-100">
       <h1 className="text-2xl sm:text-3xl font-bold mb-4">Create Segment</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -58,7 +58,7 @@ export default function CreateSegmentPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full border p-2 rounded"
+            className="w-full border border-gray-300 p-2 rounded dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           />
         </div>
 
@@ -67,33 +67,42 @@ export default function CreateSegmentPage() {
           <select
             value={logic}
             onChange={(e) => setLogic(e.target.value)}
-            className="border p-2 rounded mb-4 w-full sm:w-auto"
+            className="border border-gray-300 p-2 rounded mb-4 w-full sm:w-auto dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           >
             {logicOptions.map((lg) => (
-              <option key={lg} value={lg}>{lg}</option>
+              <option key={lg} value={lg}>
+                {lg}
+              </option>
             ))}
           </select>
 
           <label className="block mb-2 font-medium">Rules</label>
           <div className="space-y-4">
             {rules.map((rule, i) => (
-              <div key={i} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+              <div
+                key={i}
+                className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center"
+              >
                 <select
                   value={rule.field}
                   onChange={(e) => updateRule(i, 'field', e.target.value)}
-                  className="border p-2 rounded w-full sm:w-auto"
+                  className="border border-gray-300 p-2 rounded w-full sm:w-auto dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                 >
                   {fields.map((f) => (
-                    <option key={f} value={f}>{f}</option>
+                    <option key={f} value={f}>
+                      {f}
+                    </option>
                   ))}
                 </select>
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(i, 'operator', e.target.value)}
-                  className="border p-2 rounded w-full sm:w-auto"
+                  className="border border-gray-300 p-2 rounded w-full sm:w-auto dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                 >
                   {operators.map((op) => (
-                    <option key={op} value={op}>{op}</option>
+                    <option key={op} value={op}>
+                      {op}
+                    </option>
                   ))}
                 </select>
                 <input
@@ -101,7 +110,7 @@ export default function CreateSegmentPage() {
                   value={rule.value}
                   onChange={(e) => updateRule(i, 'value', e.target.value)}
                   placeholder="Value"
-                  className="border p-2 rounded w-full sm:w-32"
+                  className="border border-gray-300 p-2 rounded w-full sm:w-32 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                 />
                 <button
                   type="button"

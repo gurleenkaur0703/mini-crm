@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
@@ -7,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { fetchFromApi } from '@/utils/api';
 
 export default function CampaignDetailPage({ params }) {
-  const { id } = params;
+   const { id } = use(params);
   const router = useRouter();
   const { status } = useSession();
 
@@ -36,7 +37,7 @@ export default function CampaignDetailPage({ params }) {
         toast.error('Failed to load campaign');
         console.error(err);
       }
-      setCampaign(null); // prevents endless loading
+      setCampaign(null);
     }
   };
 
@@ -70,14 +71,15 @@ export default function CampaignDetailPage({ params }) {
   const sentCount = logs.filter(log => log.status === 'sent').length;
   const failedCount = logs.filter(log => log.status === 'failed').length;
 
-  if (loading) return <p className="p-4">Loading...</p>;
-  if (!campaign) return <p className="p-4">No campaign found.</p>;
+  if (loading) return <p className="p-4 text-gray-800 dark:text-gray-200">Loading...</p>;
+  if (!campaign) return <p className="p-4 text-gray-800 dark:text-gray-200">No campaign found.</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-3 sm:p-6 space-y-6">
       <Toaster position="top-right" />
-      <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Campaign Details</h1>
-      <div className="bg-white shadow rounded p-3 sm:p-4 space-y-2">
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">Campaign Details</h1>
+
+      <div className="bg-white dark:bg-gray-900 shadow rounded p-3 sm:p-4 space-y-2 text-gray-800 dark:text-gray-100">
         <p><strong>Name:</strong> {campaign.name}</p>
         <p><strong>Message:</strong> {campaign.message}</p>
         <p><strong>Segment:</strong> {campaign.segmentId?.name || 'N/A'}</p>
@@ -89,19 +91,19 @@ export default function CampaignDetailPage({ params }) {
         <button
           onClick={handleSend}
           disabled={campaign.status === 'sent' || sending}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 w-full sm:w-auto"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 w-full sm:w-auto"
         >
           {sending ? 'Sending...' : campaign.status === 'sent' ? 'Already Sent' : 'Send Campaign'}
         </button>
         <button
           onClick={() => router.push(`/campaigns/${id}/logs`)}
-          className="text-sm text-blue-600 underline hover:text-blue-800 w-full sm:w-auto text-center"
+          className="text-sm text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 w-full sm:w-auto text-center"
         >
           View Delivery Logs →
         </button>
       </div>
 
-      <div className="bg-gray-100 rounded p-3 sm:p-4">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded p-3 sm:p-4 text-gray-800 dark:text-gray-100">
         <h3 className="text-lg font-semibold mb-2">📊 Delivery Summary</h3>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
           <p><strong>Audience Size:</strong> {logs.length}</p>
